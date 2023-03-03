@@ -17,6 +17,8 @@ player_left = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_left.png"))
 player_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_upp.png"))
 player_down = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_down.png"))
 
+fiende = pygame.image.load(os.path.join(PATH+"\\grafik", "fiende.png"))
+
 sword_slash_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_upp.png"))
 sword_slash_right = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_right.png"))
 sword_slash_down = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_down.png"))
@@ -29,6 +31,9 @@ player_last = 0
 player_y_pos = 0
 player_x_pos = 0
 
+fiende_y_pos = 0
+fiende_x_pos = 0
+
 with open(f'{PATH}Map.dat', 'rb') as file:
     MapData = pickle.load(file)
 
@@ -39,8 +44,8 @@ movment = [False, False, False, False] # w, d, s, a
 ability = [False]
 attack = [False]
 images = [stone]
-
 while True:
+    print(fiende_x_pos, player_x_pos)
 
     clock.tick(60)
 
@@ -48,28 +53,40 @@ while True:
 
     #print(player_y_pos, player_x_pos)
     #print(pygame.key.get_mods())
-    print(ability)
+
     x, y = pygame.mouse.get_pos()
 
 
     for entity in MapData:
-        screen.blit(images[entity[0]], (entity[1][0]+player_x_pos, entity[1][1]+player_y_pos))
+        screen.blit(images[entity[0]], (entity[1][0] - player_x_pos + 252, entity[1][1] - player_y_pos + 192))
 
+    # fiende
+    screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
+    if fiende_x_pos > player_x_pos:
+        fiende_x_pos = fiende_x_pos - 2
+    if fiende_x_pos < player_x_pos:
+        fiende_x_pos = fiende_x_pos + 2
 
+    if fiende_y_pos > player_y_pos:
+        fiende_y_pos = fiende_y_pos - 2
+    if fiende_y_pos < player_y_pos:
+        fiende_y_pos = fiende_y_pos + 2
+
+    # player
     if movment[0] == True:
-        player_y_pos = player_y_pos + 5
+        player_y_pos = player_y_pos - 5
         screen.blit(player_upp, (252, 192))
         player_last = 0
     if movment[1] == True:
-        player_x_pos = player_x_pos - 5
+        player_x_pos = player_x_pos + 5
         screen.blit(player_right, (252, 192))
         player_last = 1
     if movment[2] == True:
-        player_y_pos = player_y_pos - 5
+        player_y_pos = player_y_pos + 5
         screen.blit(player_down, (252, 192))
         player_last = 2
     if movment[3] == True:
-        player_x_pos = player_x_pos + 5
+        player_x_pos = player_x_pos - 5
         screen.blit(player_left, (252, 192))
         player_last = 3
 
@@ -105,8 +122,6 @@ while True:
             screen.blit(player_down, (252, 192))
         if player_last == 3:
             screen.blit(player_left, (252, 192))
-
-
 
 
     for event in pygame.event.get():
