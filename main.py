@@ -2,6 +2,7 @@ import pygame
 import sys
 import os
 import pickle
+import math
 
 PATH = __file__[:-7]
 
@@ -16,6 +17,7 @@ player_right = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_right.png"
 player_left = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_left.png"))
 player_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_upp.png"))
 player_down = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_down.png"))
+hp = pygame.image.load(os.path.join(PATH+"\\grafik", "hp.png"))
 
 fiende = pygame.image.load(os.path.join(PATH+"\\grafik", "fiende.png"))
 
@@ -27,12 +29,13 @@ sword_slash_left = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_
 stone = pygame.image.load(os.path.join(PATH+"\\grafik", "stone.png"))
 
 player_last = 0
+player_hp = 3
 
 player_y_pos = 0
 player_x_pos = 0
 
-fiende_y_pos = 0
-fiende_x_pos = 0
+fiende_y_pos = 300
+fiende_x_pos = 300
 
 with open(f'{PATH}Map.dat', 'rb') as file:
     MapData = pickle.load(file)
@@ -45,7 +48,7 @@ ability = [False]
 attack = [False]
 images = [stone]
 while True:
-    print(fiende_x_pos, player_x_pos)
+    #print(fiende_x_pos, player_x_pos)
 
     clock.tick(60)
 
@@ -62,15 +65,28 @@ while True:
 
     # fiende
     screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
-    if fiende_x_pos > player_x_pos:
-        fiende_x_pos = fiende_x_pos - 2
-    if fiende_x_pos < player_x_pos:
-        fiende_x_pos = fiende_x_pos + 2
+    if math.fabs(player_x_pos - fiende_x_pos) < 300 and math.fabs(player_y_pos - fiende_y_pos) < 300:
+        if fiende_x_pos > player_x_pos:
+            fiende_x_pos = fiende_x_pos - 2
+        if fiende_x_pos < player_x_pos:
+            fiende_x_pos = fiende_x_pos + 2
 
-    if fiende_y_pos > player_y_pos:
-        fiende_y_pos = fiende_y_pos - 2
-    if fiende_y_pos < player_y_pos:
-        fiende_y_pos = fiende_y_pos + 2
+        if fiende_y_pos > player_y_pos:
+            fiende_y_pos = fiende_y_pos - 2
+        if fiende_y_pos < player_y_pos:
+            fiende_y_pos = fiende_y_pos + 2
+
+    # hp
+    if player_hp <= 3:
+        screen.blit(hp, (70, 10))
+    if player_hp <= 2:
+        screen.blit(hp, (40, 10))
+    if player_hp <= 1:
+        screen.blit(hp, (10, 10))
+
+    if fiende_x_pos == player_x_pos and fiende_y_pos == player_y_pos:
+        player_hp = player_hp - 1
+        print(player_hp)
 
     # player
     if movment[0] == True:
