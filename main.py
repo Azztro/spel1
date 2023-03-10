@@ -43,14 +43,17 @@ with open(f'{PATH}Map.dat', 'rb') as file:
 pygame.mouse.set_visible(1)
 pygame.display.set_caption('My game')
 
+tid = 0
+
 movment = [False, False, False, False] # w, d, s, a
 ability = [False]
 attack = [False]
 images = [stone]
 while True:
-    #print(fiende_x_pos, player_x_pos)
+    print(fiende_x_pos, player_x_pos)
 
     clock.tick(60)
+    tid = tid + 1
 
     screen.blit(bg, (0, 0))
 
@@ -62,6 +65,9 @@ while True:
 
     for entity in MapData:
         screen.blit(images[entity[0]], (entity[1][0] - player_x_pos + 252, entity[1][1] - player_y_pos + 192))
+
+        if player_x_pos + 96 >= entity[1][0] and (player_y_pos + 96 >= entity[1][1]):
+            movment[1] = False
 
     # fiende
     screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
@@ -77,16 +83,17 @@ while True:
             fiende_y_pos = fiende_y_pos + 2
 
     # hp
-    if player_hp <= 3:
-        screen.blit(hp, (70, 10))
-    if player_hp <= 2:
-        screen.blit(hp, (40, 10))
-    if player_hp <= 1:
+    if player_hp >= 1:
         screen.blit(hp, (10, 10))
+    if player_hp >= 2:
+        screen.blit(hp, (40, 10))
+    if player_hp >= 3:
+        screen.blit(hp, (70, 10))
 
-    if fiende_x_pos == player_x_pos and fiende_y_pos == player_y_pos:
+    if fiende_x_pos == player_x_pos and fiende_y_pos == player_y_pos and tid>60:
         player_hp = player_hp - 1
         print(player_hp)
+        tid = 0
 
     # player
     if movment[0] == True:
