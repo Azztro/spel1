@@ -66,8 +66,12 @@ while True:
     for entity in MapData:
         screen.blit(images[entity[0]], (entity[1][0] - player_x_pos + 252, entity[1][1] - player_y_pos + 192))
 
-        if player_x_pos + 96 >= entity[1][0] and (player_y_pos + 96 >= entity[1][1]):
+        if player_x_pos + 96 >= entity[1][0] and (player_x_pos - 96 <= entity[1][0]) and (player_y_pos + 96 >= entity[1][1]) and (player_y_pos - 96 <= entity[1][1]):
             movment[1] = False
+        if player_x_pos - 100 <= entity[1][0] and (player_x_pos + 95 >= entity[1][0]) and (player_y_pos + 96 >= entity[1][1]) and (player_y_pos - 96 <= entity[1][1]):
+            movment[3] = False
+
+
 
     # fiende
     screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
