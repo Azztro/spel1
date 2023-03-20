@@ -66,12 +66,14 @@ while True:
     for entity in MapData:
         screen.blit(images[entity[0]], (entity[1][0] - player_x_pos + 252, entity[1][1] - player_y_pos + 192))
 
-        if player_x_pos + 96 >= entity[1][0] and (player_x_pos - 96 <= entity[1][0]) and (player_y_pos + 96 >= entity[1][1]) and (player_y_pos - 96 <= entity[1][1]):
+        if player_x_pos + 100 >= entity[1][0] and (player_x_pos - 96 <= entity[1][0]) and (player_y_pos + 96 >= entity[1][1]) and (player_y_pos - 96 <= entity[1][1]):
             movment[1] = False
         if player_x_pos - 100 <= entity[1][0] and (player_x_pos + 95 >= entity[1][0]) and (player_y_pos + 96 >= entity[1][1]) and (player_y_pos - 96 <= entity[1][1]):
             movment[3] = False
-
-
+        if player_y_pos + 96 >= entity[1][1] and (player_y_pos - 100 <= entity[1][1]) and (player_x_pos + 96 >= entity[1][0]) and (player_x_pos - 96 <= entity[1][0]):
+            movment[0] = False
+        if player_y_pos - 96 <= entity[1][1] and (player_y_pos + 100 >= entity[1][1]) and (player_x_pos - 96 <= entity[1][0]) and (player_x_pos + 96 >= entity[1][0]):
+            movment[2] = False
 
     # fiende
     screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
@@ -94,10 +96,20 @@ while True:
     if player_hp >= 3:
         screen.blit(hp, (70, 10))
 
-    if fiende_x_pos == player_x_pos and fiende_y_pos == player_y_pos and tid>60:
+    if player_x_pos + 96 >= fiende_x_pos and (player_x_pos - 96 <= fiende_x_pos)\
+    and (player_y_pos + 96 >= fiende_y_pos) and (player_y_pos - 96 <= fiende_y_pos)\
+    or player_x_pos - 96 <= fiende_x_pos and (player_x_pos + 96 >= fiende_x_pos)\
+    and (player_y_pos + 96 >= fiende_y_pos) and (player_y_pos - 96 <= fiende_y_pos)\
+    and player_y_pos + 96 >= fiende_y_pos and (player_y_pos - 96 <= fiende_y_pos)\
+    and (player_x_pos + 96 >= fiende_x_pos) and (player_x_pos - 96 <= fiende_x_pos)\
+    or player_y_pos - 96 <= fiende_y_pos and (player_y_pos + 96 >= fiende_y_pos)\
+    and (player_x_pos - 96 <= fiende_x_pos) and (player_x_pos + 96 >= fiende_x_pos) and tid>60:
         player_hp = player_hp - 1
         print(player_hp)
         tid = 0
+
+ #   if player_hp <= 0:
+
 
     # player
     if movment[0] == True:
