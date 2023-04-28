@@ -4,6 +4,19 @@ import os
 import pickle
 import math
 
+
+def collides(obect_1_x_pos, obect_1_y_pos, obect_2_x_pos, obect_2_y_pos):
+    if (obect_1_x_pos + 96 >= obect_2_x_pos and (obect_1_x_pos - 96 <= obect_2_x_pos)\
+        and (obect_1_y_pos + 96 >= obect_2_y_pos) and (obect_1_y_pos - 96 <= obect_2_y_pos)\
+        or obect_1_x_pos - 96 <= obect_2_x_pos and (obect_1_x_pos + 96 >= obect_2_x_pos)\
+        and (obect_1_y_pos + 96 >= obect_2_y_pos) and (obect_1_y_pos - 96 <= obect_2_y_pos)\
+        and obect_1_y_pos + 96 >= obect_2_y_pos and (obect_1_y_pos - 96 <= obect_2_y_pos)\
+        and (obect_1_x_pos + 96 >= obect_2_x_pos) and (obect_1_x_pos - 96 <= obect_2_x_pos)\
+        or obect_1_y_pos - 96 <= obect_2_y_pos and (obect_1_y_pos + 96 >= obect_2_y_pos)\
+        and (obect_1_x_pos - 96 <= obect_2_x_pos) and (obect_1_x_pos + 96 >= obect_2_x_pos)) and tid > 60:
+        return True
+    else:
+        return False
 PATH = __file__[:-7]
 
 pygame.init()
@@ -11,6 +24,7 @@ pygame.init()
 clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode((600, 480))
+Gameover = pygame.image.load(os.path.join(PATH+"\\grafik", "Game over.png"))
 
 bg = pygame.image.load(os.path.join(PATH+"\\grafik", "Namnlös.png"))
 player_right = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_right.png"))
@@ -19,17 +33,22 @@ player_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_upp.png"))
 player_down = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_down.png"))
 hp = pygame.image.load(os.path.join(PATH+"\\grafik", "hp.png"))
 
+
 fiende = pygame.image.load(os.path.join(PATH+"\\grafik", "fiende.png"))
 
 sword_slash_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_upp.png"))
 sword_slash_right = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_right.png"))
 sword_slash_down = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_down.png"))
 sword_slash_left = pygame.image.load(os.path.join(PATH+"\\grafik", "sword_slash_left.png"))
+sword_x_pos = 0
+sword_y_pos = 0
 
 stone = pygame.image.load(os.path.join(PATH+"\\grafik", "stone.png"))
 
 player_last = 0
 player_hp = 3
+
+fiende_hp = 3
 
 player_y_pos = 0
 player_x_pos = 0
@@ -50,7 +69,9 @@ ability = [False]
 attack = [False]
 images = [stone]
 while True:
-    print(fiende_x_pos, player_x_pos)
+    #print(fiende_x_pos, player_x_pos)
+    #print('sword',sword_x_pos, sword_y_pos)
+    #print('fiende', fiende_x_pos, fiende_y_pos)
 
     clock.tick(60)
     tid = tid + 1
@@ -76,17 +97,18 @@ while True:
             movment[2] = False
 
     # fiende
-    screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
-    if math.fabs(player_x_pos - fiende_x_pos) < 300 and math.fabs(player_y_pos - fiende_y_pos) < 300:
-        if fiende_x_pos > player_x_pos:
-            fiende_x_pos = fiende_x_pos - 2
-        if fiende_x_pos < player_x_pos:
-            fiende_x_pos = fiende_x_pos + 2
+    if fiende_hp > 0:
+        screen.blit(fiende, (fiende_x_pos - player_x_pos + 252, fiende_y_pos - player_y_pos + 192))
+        if (math.fabs(player_x_pos - fiende_x_pos) < 300 and math.fabs(player_y_pos - fiende_y_pos) < 300) and fiende_hp > 0:
+            if fiende_x_pos > player_x_pos:
+                fiende_x_pos = fiende_x_pos - 2
+            if fiende_x_pos < player_x_pos:
+                fiende_x_pos = fiende_x_pos + 2
 
-        if fiende_y_pos > player_y_pos:
-            fiende_y_pos = fiende_y_pos - 2
-        if fiende_y_pos < player_y_pos:
-            fiende_y_pos = fiende_y_pos + 2
+            if fiende_y_pos > player_y_pos:
+                fiende_y_pos = fiende_y_pos - 2
+            if fiende_y_pos < player_y_pos:
+                fiende_y_pos = fiende_y_pos + 2
 
     # hp
     if player_hp >= 1:
@@ -96,19 +118,17 @@ while True:
     if player_hp >= 3:
         screen.blit(hp, (70, 10))
 
-    if player_x_pos + 96 >= fiende_x_pos and (player_x_pos - 96 <= fiende_x_pos)\
-    and (player_y_pos + 96 >= fiende_y_pos) and (player_y_pos - 96 <= fiende_y_pos)\
-    or player_x_pos - 96 <= fiende_x_pos and (player_x_pos + 96 >= fiende_x_pos)\
-    and (player_y_pos + 96 >= fiende_y_pos) and (player_y_pos - 96 <= fiende_y_pos)\
-    and player_y_pos + 96 >= fiende_y_pos and (player_y_pos - 96 <= fiende_y_pos)\
-    and (player_x_pos + 96 >= fiende_x_pos) and (player_x_pos - 96 <= fiende_x_pos)\
-    or player_y_pos - 96 <= fiende_y_pos and (player_y_pos + 96 >= fiende_y_pos)\
-    and (player_x_pos - 96 <= fiende_x_pos) and (player_x_pos + 96 >= fiende_x_pos) and tid>60:
+    if (collides(player_x_pos, player_y_pos, fiende_x_pos, fiende_y_pos)) and fiende_hp > 0:
         player_hp = player_hp - 1
-        print(player_hp)
+        #print(player_hp)
+        print(player_x_pos,player_y_pos,fiende_x_pos,fiende_y_pos)
         tid = 0
 
- #   if player_hp <= 0:
+    if (collides(sword_x_pos, sword_y_pos, fiende_x_pos, fiende_y_pos)) and tid > 100:
+        fiende_hp = fiende_hp - 1
+        print('hp',fiende_hp)
+        print(sword_x_pos, sword_y_pos, fiende_x_pos, fiende_y_pos)
+        tid = 0
 
 
     # player
@@ -132,12 +152,20 @@ while True:
     if attack[0] == True:
         if player_last == 0:
             screen.blit(sword_slash_upp, (252, 96))
+            sword_x_pos = player_x_pos
+            sword_y_pos = player_y_pos + 96
         if player_last == 1:
             screen.blit(sword_slash_right, (348, 192))
+            sword_x_pos = player_x_pos + 96
+            sword_y_pos = player_y_pos
         if player_last == 2:
             screen.blit(sword_slash_down, (252, 288))
+            sword_x_pos = player_x_pos
+            sword_y_pos = player_y_pos - 96
         if player_last == 3:
             screen.blit(sword_slash_left, (156, 192))
+            sword_x_pos = player_x_pos - 96
+            sword_y_pos = player_y_pos
 
 
 #ability
@@ -206,7 +234,9 @@ while True:
             if event.key == 1073742049:
                 ability[0] = False
 
-
+    if player_hp <= 0:
+        screen.blit(Gameover,(0,0))
+        movment[0], movment[1], movment[2], movment[3] = False, False, False, False
 
 
 
