@@ -170,13 +170,13 @@ while True:
 
 #ability
     if (movment[0] == True) and (ability[0] == True):
-        player_y_pos = player_y_pos + 15
-    if (movment[1] == True) and (ability[0] == True):
-        player_x_pos = player_x_pos - 15
-    if (movment[2] == True) and (ability[0] == True):
         player_y_pos = player_y_pos - 15
-    if (movment[3] == True) and (ability[0] == True):
+    if (movment[1] == True) and (ability[0] == True):
         player_x_pos = player_x_pos + 15
+    if (movment[2] == True) and (ability[0] == True):
+        player_y_pos = player_y_pos + 15
+    if (movment[3] == True) and (ability[0] == True):
+        player_x_pos = player_x_pos - 15
 
 
 
