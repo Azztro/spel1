@@ -32,6 +32,7 @@ player_left = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_left.png"))
 player_upp = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_upp.png"))
 player_down = pygame.image.load(os.path.join(PATH+"\\grafik", "gubbe_down.png"))
 hp = pygame.image.load(os.path.join(PATH+"\\grafik", "hp.png"))
+stamina = pygame.image.load(os.path.join(PATH+"\\grafik", "stamina.png"))
 
 
 fiende = pygame.image.load(os.path.join(PATH+"\\grafik", "fiende.png"))
@@ -63,6 +64,9 @@ pygame.mouse.set_visible(1)
 pygame.display.set_caption('My game')
 
 tid = 0
+stamina_level = 50
+coldown = stamina_level
+
 
 movment = [False, False, False, False] # w, d, s, a
 ability = [False]
@@ -75,6 +79,7 @@ while True:
 
     clock.tick(60)
     tid = tid + 1
+
 
     screen.blit(bg, (0, 0))
 
@@ -169,14 +174,30 @@ while True:
 
 
 #ability
-    if (movment[0] == True) and (ability[0] == True):
-        player_y_pos = player_y_pos - 15
-    if (movment[1] == True) and (ability[0] == True):
-        player_x_pos = player_x_pos + 15
-    if (movment[2] == True) and (ability[0] == True):
-        player_y_pos = player_y_pos + 15
-    if (movment[3] == True) and (ability[0] == True):
-        player_x_pos = player_x_pos - 15
+    print(coldown)
+
+    pygame.draw.rect(screen, (37, 177, 76),pygame.Rect(10, 40, coldown, 10))
+    pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(10, 40, stamina_level, 10), width = 2)
+
+    if coldown != stamina_level and (ability[0] == False):
+        coldown = coldown + 0.5
+
+    if (movment[0] == True) and (ability[0] == True) and (coldown > 0):
+        player_y_pos = player_y_pos - 10
+        coldown = coldown - 1
+
+    if (movment[1] == True) and (ability[0] == True) and (coldown > 0):
+        player_x_pos = player_x_pos + 10
+        coldown = coldown - 1
+
+    if (movment[2] == True) and (ability[0] == True) and (coldown > 0):
+        player_y_pos = player_y_pos + 10
+        coldown = coldown - 1
+
+    if (movment[3] == True) and (ability[0] == True) and (coldown > 0):
+        player_x_pos = player_x_pos - 10
+        coldown = coldown - 1
+
 
 
 
