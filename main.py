@@ -174,7 +174,7 @@ while True:
 
 
 #ability
-    print(coldown)
+    #print(coldown)
 
     pygame.draw.rect(screen, (37, 177, 76),pygame.Rect(10, 40, coldown, 10))
     pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(10, 40, stamina_level, 10), width = 2)
