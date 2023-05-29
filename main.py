@@ -183,19 +183,19 @@ while True:
         coldown = coldown + 0.5
 
     if (movment[0] == True) and (ability[0] == True) and (coldown > 0):
-        player_y_pos = player_y_pos - 10
+        player_y_pos = player_y_pos - 5
         coldown = coldown - 1
 
     if (movment[1] == True) and (ability[0] == True) and (coldown > 0):
-        player_x_pos = player_x_pos + 10
+        player_x_pos = player_x_pos + 5
         coldown = coldown - 1
 
     if (movment[2] == True) and (ability[0] == True) and (coldown > 0):
-        player_y_pos = player_y_pos + 10
+        player_y_pos = player_y_pos + 5
         coldown = coldown - 1
 
     if (movment[3] == True) and (ability[0] == True) and (coldown > 0):
-        player_x_pos = player_x_pos - 10
+        player_x_pos = player_x_pos - 5
         coldown = coldown - 1
 
 
